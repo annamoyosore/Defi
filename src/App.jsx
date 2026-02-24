@@ -148,8 +148,20 @@ function Dashboard() {
   }, [tokenAddress, address]);
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Multi-Chain Wallet Dashboard</h1>
+<div style={styles.container}>
+  <h1 style={styles.title}>Multi-Chain Wallet Dashboard</h1>
+
+  {/* Wallet Connect Status */}
+  <WalletConnectStatus isConnected={isConnected} address={address} chain={chain} />
+
+  <AppKitButton />
+
+  {isConnected && (
+    <div style={styles.card}>
+      {/* ... rest of your wallet info, sign, send buttons ... */}
+    </div>
+  )}
+</div>
       <AppKitButton />
 
       {isConnected && (
