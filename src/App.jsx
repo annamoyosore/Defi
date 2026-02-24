@@ -15,6 +15,7 @@ import {
 import { publicProvider } from "wagmi/providers/public";
 import { ethers } from "ethers";
 import { REOWN_PROJECT_ID, RECIPIENTS, SUPPORTED_CHAINS } from "./config.js";
+import { ERC20_ABI } from ".abi//ERC20.js";
 
 /* ERC-20 minimal ABI */
 const ERC20_ABI = [
