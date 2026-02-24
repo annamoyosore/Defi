@@ -14,7 +14,7 @@ import {
 } from "wagmi";
 import { ethers } from "ethers";
 import { REOWN_PROJECT_ID, RECIPIENTS, SUPPORTED_CHAINS } from "./config.js";
-import { ERC20_ABI } from ".abi//ERC20.js"; // ✅ keep only this import
+import { ERC20_ABI } from "./abi/ERC20.js"; // ✅ keep only this import
 
 /* Wagmi config - remove publicProvider, use empty array since AppKitProvider handles provider */
 const { chains, publicClient } = configureChains(SUPPORTED_CHAINS, []);
