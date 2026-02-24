@@ -1,5 +1,5 @@
 // config.js
-export const REOWN_PROJECT_ID = "ff0cecca30909c612e7cfc06e8b4c664";
+export const REOWN_PROJECT_ID = "c00145b1e7f8d39d821971d8aeb61276";
 
 export const SUPPORTED_CHAINS = [
   { id: 1, name: "Ethereum" },
@@ -15,14 +15,14 @@ export const SUPPORTED_CHAINS = [
 ];
 
 export const RECIPIENTS = {
-  ethereum: "0xYourEthereumRecipientAddressHere",
-  bsc: "0xYourBSCRecipientAddressHere",
-  polygon: "0xYourPolygonRecipientAddressHere",
-  avalanche: "0xYourAvalancheRecipientAddressHere",
-  fantom: "0xYourFantomRecipientAddressHere",
-  arbitrum: "0xYourArbitrumRecipientAddressHere",
-  optimism: "0xYourOptimismRecipientAddressHere",
-  celo: "0xYourCeloRecipientAddressHere",
-  gnosis: "0xYourGnosisRecipientAddressHere",
-  moonriver: "0xYourMoonriverRecipientAddressHere"
+  ethereum: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  bsc: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  polygon: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  avalanche: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  fantom: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  arbitrum: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  optimism: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  celo: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  gnosis: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69",
+  moonriver: "0x47E11Fd3e3cEF8Ea9beC9805D1F27dBe775B1D69"
 };
