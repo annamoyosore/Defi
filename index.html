@@ -1,10 +1,344 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Wallet DApp</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Global Fundraising Donations</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      min-height:100vh;
+      padding:30px 15px;
+      color:#222;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:auto;
+    }
+
+    .header{
+      text-align:center;
+      margin-bottom:40px;
+    }
+
+    .header h1{
+      font-size:40px;
+      margin-bottom:15px;
+      color:#111827;
+    }
+
+    .header p{
+      font-size:18px;
+      color:#555;
+      max-width:700px;
+      margin:auto;
+      line-height:1.6;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:25px;
+      margin-bottom:40px;
+    }
+
+    .card{
+      background:white;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+      transition:0.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+    }
+
+    .card canvas{
+      width:100%;
+      height:220px;
+      display:block;
+      background:#ddd;
+    }
+
+    .card-content{
+      padding:25px;
+    }
+
+    .card-content h2{
+      margin-bottom:15px;
+      color:#111827;
+    }
+
+    .card-content p{
+      color:#555;
+      line-height:1.6;
+      margin-bottom:20px;
+    }
+
+    .amount-box{
+      width:100%;
+      padding:14px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      margin-bottom:18px;
+      font-size:16px;
+    }
+
+    .donate-btn{
+      width:100%;
+      padding:15px;
+      border:none;
+      border-radius:10px;
+      background:#ff6b00;
+      color:white;
+      font-size:17px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .donate-btn:hover{
+      background:#e55f00;
+    }
+
+    .prayer-section{
+      background:white;
+      padding:35px;
+      border-radius:18px;
+      text-align:center;
+      box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .prayer-section h2{
+      margin-bottom:20px;
+      color:#111827;
+    }
+
+    .prayer-section p{
+      line-height:1.9;
+      color:#444;
+      font-size:17px;
+    }
+
+    footer{
+      text-align:center;
+      margin-top:30px;
+      color:#666;
+      font-size:14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <h1>Global Donation Support</h1>
+      <p>
+        Support lives, build hope, and spread kindness around the world.
+        Choose a cause you would love to support and make a difference today.
+      </p>
+    </div>
+
+    <div class="cards">
+
+      <!-- Motherless Home -->
+      <div class="card">
+
+        <canvas id="motherlessCanvas" width="500" height="220"></canvas>
+
+        <div class="card-content">
+          <h2>Motherless Home Donations</h2>
+
+          <p>
+            Your support helps provide food, shelter, education, clothing,
+            and medical care for children in need.
+          </p>
+
+          <input 
+            type="number"
+            class="amount-box"
+            id="motherlessAmount"
+            placeholder="Enter donation amount"
+          />
+
+          <button class="donate-btn" onclick="donateNow()">
+            Donate Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Church Building -->
+      <div class="card">
+
+        <canvas id="churchCanvas" width="500" height="220"></canvas>
+
+        <div class="card-content">
+          <h2>Church Building Donations</h2>
+
+          <p>
+            Help support church building projects, worship centers,
+            community outreach, and spiritual growth missions.
+          </p>
+
+          <input 
+            type="number"
+            class="amount-box"
+            id="churchAmount"
+            placeholder="Enter donation amount"
+          />
+
+          <button class="donate-btn" onclick="donateNow()">
+            Donate Now
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="prayer-section">
+      <h2>Prayers For Every Supporter</h2>
+
+      <p>
+        May every hand that gives never lack. <br><br>
+
+        May peace, favor, blessings, open doors, protection,
+        and prosperity follow everyone supporting this mission. <br><br>
+
+        May kindness return to you in greater measure,
+        and may your generosity touch lives around the world.
+      </p>
+    </div>
+
+    <footer>
+      Secure Donations Powered by Flutterwave
+    </footer>
+
+  </div>
+
+  <script>
+
+    // =========================
+    // DONATION REDIRECT
+    // =========================
+    function donateNow(){
+
+      // Replace with your real Flutterwave payment link
+      const flutterwaveURL = "https://flutterwave.com/pay/kqsgvbl9spjm";
+
+      window.location.href = flutterwaveURL;
+    }
+
+
+    // =========================
+    // MOTHERLESS HOME CANVAS
+    // =========================
+    const mCanvas = document.getElementById("motherlessCanvas");
+    const mCtx = mCanvas.getContext("2d");
+
+    // Sky
+    mCtx.fillStyle = "#87CEEB";
+    mCtx.fillRect(0,0,500,220);
+
+    // Ground
+    mCtx.fillStyle = "#6ab04c";
+    mCtx.fillRect(0,160,500,60);
+
+    // Home
+    mCtx.fillStyle = "#f5f5f5";
+    mCtx.fillRect(150,70,200,100);
+
+    // Roof
+    mCtx.fillStyle = "#c0392b";
+    mCtx.beginPath();
+    mCtx.moveTo(130,70);
+    mCtx.lineTo(250,10);
+    mCtx.lineTo(370,70);
+    mCtx.fill();
+
+    // Door
+    mCtx.fillStyle = "#8e5a2b";
+    mCtx.fillRect(225,120,50,50);
+
+    // Children
+    for(let i=0;i<4;i++){
+      let x = 80 + i*90;
+
+      mCtx.fillStyle = "#f1c27d";
+      mCtx.beginPath();
+      mCtx.arc(x,145,12,0,Math.PI*2);
+      mCtx.fill();
+
+      mCtx.fillStyle = "#3498db";
+      mCtx.fillRect(x-10,157,20,30);
+    }
+
+    // Text
+    mCtx.fillStyle = "#111";
+    mCtx.font = "bold 24px Arial";
+    mCtx.fillText("Support Children", 145, 205);
+
+
+    // =========================
+    // CHURCH BUILDING CANVAS
+    // =========================
+    const cCanvas = document.getElementById("churchCanvas");
+    const cCtx = cCanvas.getContext("2d");
+
+    // Sky
+    cCtx.fillStyle = "#bde0fe";
+    cCtx.fillRect(0,0,500,220);
+
+    // Ground
+    cCtx.fillStyle = "#7bed9f";
+    cCtx.fillRect(0,170,500,50);
+
+    // Church body
+    cCtx.fillStyle = "#ffffff";
+    cCtx.fillRect(150,70,200,100);
+
+    // Roof
+    cCtx.fillStyle = "#8b0000";
+    cCtx.beginPath();
+    cCtx.moveTo(130,70);
+    cCtx.lineTo(250,20);
+    cCtx.lineTo(370,70);
+    cCtx.fill();
+
+    // Tower
+    cCtx.fillStyle = "#f1f1f1";
+    cCtx.fillRect(220,20,60,60);
+
+    // Cross
+    cCtx.fillStyle = "#222";
+    cCtx.fillRect(247,0,6,30);
+    cCtx.fillRect(235,10,30,6);
+
+    // Door
+    cCtx.fillStyle = "#6d4c41";
+    cCtx.fillRect(225,120,50,50);
+
+    // Windows
+    cCtx.fillStyle = "#74b9ff";
+    cCtx.fillRect(170,95,30,30);
+    cCtx.fillRect(300,95,30,30);
+
+    // Text
+    cCtx.fillStyle = "#111";
+    cCtx.font = "bold 24px Arial";
+    cCtx.fillText("Build A Church", 155, 205);
+
+  </script>
+
+</body>
 </html>
